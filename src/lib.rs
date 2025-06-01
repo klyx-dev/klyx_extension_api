@@ -1,12 +1,10 @@
 #![no_std]
 
-pub mod klyx;
+pub mod android;
+pub mod ui;
 
 /// Trait that every extension must implement.
-pub trait KlyxExtension {
-    /// Required memory size (in bytes)
-    fn requested_memory_size() -> u32;
-
+pub trait Extension {
     /// Entry point
     fn start();
 }
@@ -16,13 +14,8 @@ pub trait KlyxExtension {
 macro_rules! register_extension {
     ($ty:ty) => {
         #[unsafe(no_mangle)]
-        pub extern "C" fn requested_memory_size() -> u32 {
-            <$ty as $crate::KlyxExtension>::requested_memory_size()
-        }
-
-        #[unsafe(no_mangle)]
         pub extern "C" fn start() {
-            <$ty as $crate::KlyxExtension>::start()
+            <$ty as $crate::Extension>::start()
         }
     };
 }
