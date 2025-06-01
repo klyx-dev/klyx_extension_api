@@ -1,3 +1,4 @@
+#[link(wasm_import_module = "Android")]
 unsafe extern "C" {
     fn show_toast_impl(ptr: *const u8, len: usize);
 }
