@@ -24,7 +24,7 @@ rustup target add wasm32-unknown-unknown
 
 1. Create a new Rust project:
 ```bash
-cargo new my_klyx_extension
+cargo new --lib my_klyx_extension
 cd my_klyx_extension
 ```
 
