@@ -39,7 +39,7 @@ edition = "2024"
 crate-type = ["cdylib"]
 
 [dependencies]
-klyx_extension_api = "1.1.0"
+klyx_extension_api = "1.2.0"
 ```
 
 3. Implement your extension in `src/lib.rs`:
