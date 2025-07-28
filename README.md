@@ -4,20 +4,20 @@ A Rust-based API for building extensions for the Klyx platform. This API provide
 
 ## Overview
 
-The Klyx Extension API allows developers to create extensions using Rust that compile to WebAssembly (WASM). Extensions can leverage platform-specific features like Android toast notifications and UI components while maintaining cross-platform compatibility.
+The Klyx Extension API allows developers to create extensions using Rust that compile to WebAssembly (WASM).
 
 ## Getting Started
 
 ### Prerequisites
 
 - Rust toolchain (latest stable)
-- `wasm32-unknown-unknown` target installed
+- `wasm32-wasip1` target installed
 - Cargo
 
 ### Installing the WASM Target
 
 ```bash
-rustup target add wasm32-unknown-unknown
+rustup target add wasm32-wasip1
 ```
 
 ### Creating an Extension
@@ -44,41 +44,42 @@ klyx_extension_api = "1.1.0"
 
 3. Implement your extension in `src/lib.rs`:
 ```rust
-#![no_std]
-
-use klyx_extension_api::{Extension, register_extension, android::show_toast};
+use klyx_extension_api::{self as klyx};
 
 pub struct MyExtension;
 
-impl Extension for MyExtension {
-    fn init() {
-        show_toast("Hello from my Klyx extension!");
+impl klyx::Extension for MyExtension {
+    fn new() -> Self {
+        klyx::show_toast("Hello, World!", klyx::ToastDuration::Short);
+        Self
     }
+
+    ...
 }
 
-register_extension!(MyExtension);
+klyx::register_extension!(MyExtension);
 ```
 
 4. Build your extension:
 ```bash
-cargo build --target wasm32-unknown-unknown --release
+cargo build --target wasm32-wasip1 --release
 ```
 
 ## Building Extensions
 
 ### Development Build
 ```bash
-cargo build --target wasm32-unknown-unknown
+cargo build --target wasm32-wasip1
 ```
 
 ### Release Build
 ```bash
-cargo build --target wasm32-unknown-unknown --release
+cargo build --target wasm32-wasip1 --release
 ```
 
 The compiled WASM file will be located at:
 ```
-target/wasm32-unknown-unknown/release/your_extension_name.wasm
+target/wasm32-wasip1/release/your_extension_name.wasm
 ```
 
 ## Example Extension
@@ -86,41 +87,23 @@ target/wasm32-unknown-unknown/release/your_extension_name.wasm
 Here's a complete example of a simple extension:
 
 ```rust
-#![no_std]
+use klyx_extension_api::{self as klyx};
 
-use klyx_extension_api::{Extension, register_extension, android::show_toast};
+struct TestExtension;
 
-pub struct WelcomeExtension;
+impl klyx::Extension for TestExtension {
+    fn new() -> Self {
+        klyx::show_toast("Hello, I am a test extension", klyx::ToastDuration::Long);
+        Self
+    }
 
-impl Extension for WelcomeExtension {
-    fn init() {
-        show_toast("Welcome to Klyx!");
+    fn uninstall(&self) {
+        klyx::show_toast("Uninstalling...", klyx::ToastDuration::Short);
     }
 }
 
-register_extension!(WelcomeExtension);
+klyx::register_extension!(TestExtension);
 ```
-
-## Best Practices
-
-1. **Keep extensions lightweight** - Extensions run in a constrained WASM environment
-2. **Handle errors gracefully** - Always consider error cases in your extension logic
-3. **Use `#![no_std]`** - The API is designed for `no_std` environments
-4. **Test thoroughly** - Test your extension on target devices before distribution
-
-## Platform Support
-
-- **Android**: Full support with native integration
-- **Other platforms**: Basic WASM runtime support
-
-## Architecture
-
-Extensions are compiled to WebAssembly and loaded by the Klyx runtime. The API provides:
-
-- **Safe bindings** to platform-specific functionality
-- **Cross-platform compatibility** through WebAssembly
-- **Minimal overhead** with `no_std` design
-- **Type safety** through Rust's type system
 
 ## Limitations
 
@@ -134,7 +117,6 @@ Extensions are compiled to WebAssembly and loaded by the Klyx runtime. The API p
 Contributions to the Klyx Extension API are welcome! Please ensure your code:
 
 - Follows Rust best practices
-- Maintains `no_std` compatibility
 - Includes appropriate documentation
 - Passes all tests
 

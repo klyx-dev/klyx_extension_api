@@ -1,15 +1,22 @@
 [package]
 name = "klyx_extension_api"
-version = "1.1.1"
+version = "1.2.1"
 edition = "2024"
 authors = ["Vivek"]
 description = "A Rust-based API for building WebAssembly extensions for the Klyx"
 license = "GPL-3.0"
 repository = "https://github.com/klyx-dev/klyx_extension_api"
 homepage = "https://github.com/klyx-dev/klyx_extension_api"
-documentation = "https://docs.rs/klyx_extension_api"
 readme = "README.md"
 keywords = ["klyx", "extension", "webassembly", "wasm", "android"]
 categories = ["api-bindings", "wasm", "development-tools"]
+publish = true
+
+[lib]
+path = "src/extension_api.rs"
 
 [dependencies]
+wit-bindgen = "0.43.0"
+
+[package.metadata.component]
+target = { path = "wit" }
