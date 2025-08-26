@@ -1,24 +1,13 @@
-[package]
-name = "klyx_extension_api"
-version = "1.2.1"
+[workspace]
+resolver = "2"
+
+members = ["crates/extension_api"]
+default-members = ["crates/extension_api"]
+
+[workspace.package]
 edition = "2024"
-authors = ["Vivek"]
-description = "A Rust-based API for building WebAssembly extensions for the Klyx"
-license = "GPL-3.0"
-repository = "https://github.com/klyx-dev/klyx_extension_api"
-homepage = "https://github.com/klyx-dev/klyx_extension_api"
-readme = "README.md"
-keywords = ["klyx", "extension", "webassembly", "wasm", "android"]
-categories = ["api-bindings", "wasm", "development-tools"]
-publish = true
+publish = false
 
-[lib]
-path = "src/extension_api.rs"
-
-[dependencies]
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-wit-bindgen = "0.43.0"
-
-[package.metadata.component]
-target = { path = "wit" }
+[workspace.profile.release]
+lto = false
+opt-level = "s"

@@ -2,15 +2,18 @@ pub mod process;
 
 use core::fmt;
 
+use serde::{Serialize, Serializer, ser::SerializeStruct};
 use wit::*;
+
+pub use serde_json;
 
 // WIT re-exports.
 //
 // We explicitly enumerate the symbols we want to re-export, as there are some
 // that we may want to shadow to provide a cleaner Rust API.
 pub use wit::{
-    CodeLabel, CodeLabelSpan, CodeLabelSpanLiteral, Command, DownloadedFileType, EnvVars,
-    KeyValueStore, LanguageServerInstallationStatus, Project, Range, Worktree, download_file,
+    CodeLabel, CodeLabelSpan, CodeLabelSpanLiteral, Command, EnvVars, KeyValueStore,
+    LanguageServerInstallationStatus, Project, Range, Worktree, download_file,
     klyx::extension::system::{ToastDuration, show_toast},
     make_file_executable,
 };

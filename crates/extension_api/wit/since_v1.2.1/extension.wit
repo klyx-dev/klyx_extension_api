@@ -12,18 +12,6 @@ world extension {
     export init-extension: func();
     export uninstall: func();
 
-    /// The type of a downloaded file.
-    enum downloaded-file-type {
-        /// A gzipped file (`.gz`).
-        gzip,
-        /// A gzipped tar archive (`.tar.gz`).
-        gzip-tar,
-        /// A ZIP file (`.zip`).
-        zip,
-        /// An uncompressed file.
-        uncompressed,
-    }
-
     /// The installation status for a language server.
     variant language-server-installation-status {
         /// The language server has no installation status.
@@ -36,18 +24,9 @@ world extension {
         failed(string),
     }
 
-    record settings-location {
-        worktree-id: u64,
-        path: string,
-    }
-
-    import get-settings: func(path: option<settings-location>, category: string, key: option<string>) -> result<string, string>;
-
     /// Downloads a file from the given URL and saves it to the given path within the extension's
     /// working directory.
-    ///
-    /// The file will be extracted according to the given file type.
-    import download-file: func(url: string, file-path: string, file-type: downloaded-file-type) -> result<_, string>;
+    import download-file: func(url: string, file-path: string) -> result<_, string>;
 
     /// Makes the file at the given path executable.
     import make-file-executable: func(filepath: string) -> result<_, string>;
